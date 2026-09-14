@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Senior Dashboard | CampusNotes</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+
+<!-- NAVBAR -->
+
+<header class="navbar">
+
+    <div class="logo">
+        📚 Campus<span>Notes</span>
+    </div>
+
+    <div class="nav-user">
+
+        <span>
+            👨‍🎓 {{ name }}
+        </span>
+
+        <a
+            href="/logout"
+            class="login-btn"
+        >
+            Logout
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="dashboard">
+
+
+    <!-- HEADER -->
+
+    <div class="dashboard-header">
+
+        <div>
+
+            <p class="eyebrow">
+                SENIOR CONTRIBUTOR
+            </p>
+
+            <h1>
+                Welcome back, {{ name }} 👋
+            </h1>
+
+            <p>
+                Share your knowledge and help your juniors learn.
+            </p>
+
+        </div>
+
+
+        <a
+            href="/senior/upload"
+            class="primary-btn"
+        >
+            + Upload Notes
+        </a>
+
+    </div>
+
+
+    <!-- FLASH MESSAGE -->
+
+    {% with messages = get_flashed_messages() %}
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div class="message">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    <!-- STATISTICS -->
+
+    <div class="senior-stats">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                📚
+            </div>
+
+            <div>
+                <strong>{{ total }}</strong>
+                <span>Total Uploads</span>
+            </div>
+
+        </div>
+
+
+        <div class="stat-card approved-stat">
+
+            <div class="stat-icon">
+                ✓
+            </div>
+
+            <div>
+                <strong>{{ approved }}</strong>
+                <span>Approved</span>
+            </div>
+
+        </div>
+
+
+        <div class="stat-card pending-stat">
+
+            <div class="stat-icon">
+                ⏳
+            </div>
+
+            <div>
+                <strong>{{ pending }}</strong>
+                <span>Pending</span>
+            </div>
+
+        </div>
+
+
+        <div class="stat-card rejected-stat">
+
+            <div class="stat-icon">
+                !
+            </div>
+
+            <div>
+                <strong>{{ rejected }}</strong>
+                <span>Rejected</span>
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                ↓
+            </div>
+
+            <div>
+                <strong>{{ downloads }}</strong>
+                <span>Total Downloads</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- UPLOADED RESOURCES -->
+
+    <section class="my-resources">
+
+        <div class="resource-heading">
+
+            <div>
+
+                <h2>
+                    My Uploaded Resources
+                </h2>
+
+                <p>
+                    Track the status of your contributions.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="senior-notes">
+
+
+            {% for note in notes %}
+
+            <div class="senior-note-card">
+
+                <div class="senior-note-icon">
+                    📄
+                </div>
+
+
+                <div class="senior-note-info">
+
+                    <h3>
+                        {{ note.title }}
+                    </h3>
+
+                    <p>
+                        {{ note.subject }}
+                        • Semester {{ note.semester }}
+                        {% if note.unit %}
+                        • {{ note.unit }}
+                        {% endif %}
+                    </p>
+
+                    <span class="upload-date">
+                        Uploaded {{ note.created_at }}
+                    </span>
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="status-area">
+
+                    {% if note.status == "approved" %}
+
+                        <span class="status approved">
+                            ✓ Approved
+                        </span>
+
+                        <span class="download-info">
+                            ↓ {{ note.download_count }}
+                        </span>
+
+
+                    {% elif note.status == "pending" %}
+
+                        <span class="status pending">
+                            ⏳ Pending Review
+                        </span>
+
+
+                    {% elif note.status == "rejected" %}
+
+                        <span class="status rejected">
+                            ✕ Rejected
+                        </span>
+
+                        {% if note.rejection_reason %}
+
+                        <div class="rejection-feedback">
+
+                            <strong>
+                                Staff Feedback
+                            </strong>
+
+                            <p>
+                                {{ note.rejection_reason }}
+                            </p>
+
+                        </div>
+
+                        {% endif %}
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+
+            {% if not notes %}
+
+            <div class="empty-state">
+
+                <div>📤</div>
+
+                <h2>
+                    No uploads yet
+                </h2>
+
+                <p>
+                    Share your first resource with your juniors.
+                </p>
+
+                <br>
+
+                <a
+                    href="/senior/upload"
+                    class="primary-btn"
+                >
+                    Upload Your First Note
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+
+</html>

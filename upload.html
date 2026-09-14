@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Upload Notes | CampusNotes</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="auth-container">
+
+    <div class="auth-card upload-card">
+
+        <div class="auth-logo">
+            📚 Campus<span>Notes</span>
+        </div>
+
+        <h1>Share your knowledge</h1>
+
+        <p class="auth-subtitle">
+            Upload a useful resource for your juniors.
+        </p>
+
+
+        {% with messages = get_flashed_messages() %}
+
+            {% if messages %}
+
+                {% for message in messages %}
+
+                    <div class="message">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <form method="POST"
+              enctype="multipart/form-data">
+
+            <label>Note Title</label>
+
+            <input
+                type="text"
+                name="title"
+                placeholder="Example: Data Structures Unit 3"
+                required
+            >
+
+
+            <label>Description</label>
+
+            <textarea
+                name="description"
+                placeholder="Briefly describe these notes..."
+                rows="4"
+            ></textarea>
+
+
+            <label>Department</label>
+
+            <select name="department" required>
+
+                <option value="">Select Department</option>
+
+                <option value="Information Technology">
+                    Information Technology
+                </option>
+
+                <option value="Computer Science">
+                    Computer Science
+                </option>
+
+                <option value="AI & Data Science">
+                    AI & Data Science
+                </option>
+
+                <option value="Electronics">
+                    Electronics
+                </option>
+
+            </select>
+
+
+            <label>Semester</label>
+
+            <select name="semester" required>
+
+                <option value="">Select Semester</option>
+
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+                <option value="3">Semester 3</option>
+                <option value="4">Semester 4</option>
+                <option value="5">Semester 5</option>
+                <option value="6">Semester 6</option>
+                <option value="7">Semester 7</option>
+                <option value="8">Semester 8</option>
+
+            </select>
+
+
+            <label>Subject</label>
+
+            <input
+                type="text"
+                name="subject"
+                placeholder="Example: Data Structures"
+                required
+            >
+
+
+            <label>Unit</label>
+
+            <input
+                type="text"
+                name="unit"
+                placeholder="Example: Unit 3"
+            >
+
+
+            <label>Upload PDF</label>
+
+            <input
+                type="file"
+                name="file"
+                accept=".pdf"
+                required
+            >
+
+
+            <button
+                type="submit"
+                class="auth-button"
+            >
+                Submit for Approval →
+            </button>
+
+        </form>
+
+
+        <p class="auth-footer">
+
+            <a href="/senior/dashboard">
+                ← Back to Dashboard
+            </a>
+
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+</html>

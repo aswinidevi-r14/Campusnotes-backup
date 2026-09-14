@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Faculty Portal | CampusNotes</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="logo">
+        📚 Campus<span>Notes</span>
+    </div>
+
+    <div class="nav-user">
+
+        <span>👨‍🏫 {{ name }}</span>
+
+        <a href="/logout" class="login-btn">
+            Logout
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="dashboard">
+
+    <div class="dashboard-header">
+
+        <div>
+
+            <p class="eyebrow">
+                FACULTY PORTAL
+            </p>
+
+            <h1>
+                Resource Review Center
+            </h1>
+
+            <p>
+                Review student submissions before
+                publishing them to the campus library.
+            </p>
+
+        </div>
+
+        <div class="approval-count">
+
+            <strong>
+                {{ notes|length }}
+            </strong>
+
+            <span>
+                Pending
+            </span>
+
+        </div>
+        <a href="/staff/analytics"
+   class="analytics-btn">
+
+    📊 View Analytics
+
+</a>
+
+    </div>
+
+
+    <!-- FLASH MESSAGE -->
+
+    {% with messages = get_flashed_messages() %}
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div class="message">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    <div class="review-banner">
+
+        <div class="review-banner-icon">
+            🛡️
+        </div>
+
+        <div>
+
+            <strong>
+                Faculty Verification
+            </strong>
+
+            <p>
+                Only faculty-approved resources
+                are visible to junior students.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <section>
+
+        <div class="section-heading">
+
+            <h2>
+                Pending Reviews
+            </h2>
+
+            <p>
+                Resources waiting for faculty approval
+            </p>
+
+        </div>
+
+
+        <div class="notes-grid">
+
+            {% for note in notes %}
+
+            <article class="review-card">
+
+                <div class="review-top">
+
+                    <div class="review-file-icon">
+                        PDF
+                    </div>
+
+                    <span class="pending-badge">
+                        PENDING REVIEW
+                    </span>
+
+                </div>
+
+
+                <h3>
+                    {{ note.title }}
+                </h3>
+
+
+                <p class="review-description">
+
+                    {{ note.description or
+                    "No description provided." }}
+
+                </p>
+
+
+                <div class="review-details">
+
+                    <div>
+
+                        <span>
+                            Department
+                        </span>
+
+                        <strong>
+                            {{ note.department }}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Semester
+                        </span>
+
+                        <strong>
+                            {{ note.semester }}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Subject
+                        </span>
+
+                        <strong>
+                            {{ note.subject }}
+                        </strong>
+
+                    </div>
+
+
+                    {% if note.unit %}
+
+                    <div>
+
+                        <span>
+                            Unit
+                        </span>
+
+                        <strong>
+                            {{ note.unit }}
+                        </strong>
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="review-actions">
+
+                    <a
+                        href="{{ url_for(
+                            'static',
+                            filename='uploads/' + note.filename
+                        ) }}"
+                        target="_blank"
+                        class="preview-btn"
+                    >
+                        👁 Preview PDF
+                    </a>
+
+
+                    <a
+                        href="/staff/approve/{{ note.id }}"
+                        class="approve-btn"
+                    >
+                        ✓ Approve
+                    </a>
+
+
+                    <form
+                        action="/staff/reject/{{ note.id }}"
+                        method="POST"
+                        class="reject-form"
+                    >
+
+                        <input
+                            type="text"
+                            name="reason"
+                            placeholder="Reason for rejection..."
+                            required
+                        >
+
+                        <button
+                            type="submit"
+                            class="reject-btn"
+                        >
+                            ✕ Reject
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </article>
+
+
+            {% else %}
+
+            <div class="empty-state">
+
+                <div>
+                    🎉
+                </div>
+
+                <h2>
+                    All caught up!
+                </h2>
+
+                <p>
+                    No resources are waiting for approval.
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+
+</html>

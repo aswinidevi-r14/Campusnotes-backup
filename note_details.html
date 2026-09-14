@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>{{ note.title }} | CampusNotes</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="logo">
+        📚 Campus<span>Notes</span>
+    </div>
+
+    <div class="nav-user">
+
+        <span>
+            👋 {{ name }}
+        </span>
+
+        <a href="/logout"
+           class="login-btn">
+            Logout
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="note-page">
+
+
+    <a href="/junior/dashboard"
+       class="back-link">
+        ← Back to Resource Library
+    </a>
+
+
+    {% with messages = get_flashed_messages() %}
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div class="message">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+
+
+    <!-- NOTE HEADER -->
+
+    <section class="note-hero">
+
+        <div class="large-pdf">
+            PDF
+        </div>
+
+        <div class="note-main-info">
+
+            <div class="verified-label">
+                ✓ FACULTY VERIFIED
+            </div>
+
+            <h1>
+                {{ note.title }}
+            </h1>
+
+            <p>
+                {{ note.description or
+                "No description provided." }}
+            </p>
+
+            <div class="note-meta">
+
+                <span>
+                    📚 {{ note.subject }}
+                </span>
+
+                <span>
+                    Semester {{ note.semester }}
+                </span>
+
+                {% if note.unit %}
+
+                <span>
+                    {{ note.unit }}
+                </span>
+
+                {% endif %}
+
+                <span>
+                    👨‍🎓 {{ note.uploader_name }}
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- STATS -->
+
+    <section class="note-stats">
+
+        <div>
+
+            <strong>
+                ⭐ {{ average_rating }}
+            </strong>
+
+            <span>
+                {{ review_count }} reviews
+            </span>
+
+        </div>
+
+
+        <div>
+
+            <strong>
+                ↓ {{ note.download_count }}
+            </strong>
+
+            <span>
+                Downloads
+            </span>
+
+        </div>
+
+
+        <a
+            href="/download/{{ note.id }}"
+            class="download-large"
+        >
+            ↓ Download PDF
+        </a>
+
+    </section>
+
+
+
+    <!-- REVIEW -->
+
+    <section class="review-section">
+
+        <div class="review-title">
+
+            <h2>
+                Rate this resource
+            </h2>
+
+            <p>
+                Help other students find useful notes.
+            </p>
+
+        </div>
+
+
+        <form
+            action="/note/{{ note.id }}/rate"
+            method="POST"
+            class="rating-form"
+        >
+
+            <label>
+                Your rating
+            </label>
+
+
+            <div class="star-selector">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="rating"
+                        value="1"
+                        required
+                        {% if my_rating and my_rating.rating == 1 %}
+                        checked
+                        {% endif %}
+                    >
+                    <span>★</span>
+                </label>
+
+
+                <label>
+                    <input
+                        type="radio"
+                        name="rating"
+                        value="2"
+                        {% if my_rating and my_rating.rating == 2 %}
+                        checked
+                        {% endif %}
+                    >
+                    <span>★</span>
+                </label>
+
+
+                <label>
+                    <input
+                        type="radio"
+                        name="rating"
+                        value="3"
+                        {% if my_rating and my_rating.rating == 3 %}
+                        checked
+                        {% endif %}
+                    >
+                    <span>★</span>
+                </label>
+
+
+                <label>
+                    <input
+                        type="radio"
+                        name="rating"
+                        value="4"
+                        {% if my_rating and my_rating.rating == 4 %}
+                        checked
+                        {% endif %}
+                    >
+                    <span>★</span>
+                </label>
+
+
+                <label>
+                    <input
+                        type="radio"
+                        name="rating"
+                        value="5"
+                        {% if my_rating and my_rating.rating == 5 %}
+                        checked
+                        {% endif %}
+                    >
+                    <span>★</span>
+                </label>
+
+            </div>
+
+
+            <label>
+                Your review
+            </label>
+
+            <textarea
+                name="review"
+                placeholder="What did you think about these notes?"
+                rows="4"
+            >{% if my_rating %}{{ my_rating.review or "" }}{% endif %}</textarea>
+
+
+            <button
+                type="submit"
+                class="submit-review-btn"
+            >
+                {% if my_rating %}
+                    Update Review
+                {% else %}
+                    Submit Review
+                {% endif %}
+            </button>
+
+        </form>
+
+    </section>
+
+
+
+    <!-- REVIEWS -->
+
+    <section class="reviews-list">
+
+        <div class="review-title">
+
+            <h2>
+                Student Reviews
+            </h2>
+
+            <p>
+                What other students think about this resource.
+            </p>
+
+        </div>
+
+
+        {% for review in reviews %}
+
+        <article class="student-review">
+
+            <div class="review-avatar">
+
+                {{ review.reviewer_name[0] }}
+
+            </div>
+
+
+            <div class="review-content">
+
+                <div class="review-top-line">
+
+                    <strong>
+                        {{ review.reviewer_name }}
+                    </strong>
+
+                    <span class="review-stars">
+
+                        {% for i in range(review.rating) %}
+                            ★
+                        {% endfor %}
+
+                    </span>
+
+                </div>
+
+
+                {% if review.review %}
+
+                <p>
+                    {{ review.review }}
+                </p>
+
+                {% endif %}
+
+            </div>
+
+        </article>
+
+        {% else %}
+
+        <div class="empty-reviews">
+
+            <div>
+                ⭐
+            </div>
+
+            <h3>
+                Be the first to review!
+            </h3>
+
+            <p>
+                Your feedback can help other students.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </section>
+
+
+</main>
+
+</body>
+
+</html>

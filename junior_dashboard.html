@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Resource Library | CampusNotes</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<header class="navbar">
+
+    <div class="logo">
+        📚 Campus<span>Notes</span>
+    </div>
+
+    <div class="nav-user">
+
+        <span>
+            👩‍🎓 {{ name }}
+        </span>
+
+        <a href="/logout"
+           class="login-btn">
+            Logout
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- DASHBOARD -->
+
+<main class="dashboard">
+
+
+    <!-- HEADER -->
+
+    <div class="dashboard-header">
+
+        <div>
+
+            <p class="eyebrow">
+                STUDENT RESOURCE LIBRARY
+            </p>
+
+            <h1>
+                Welcome back, {{ name }} 👋
+            </h1>
+
+            <p>
+                Discover verified resources shared by your seniors.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+
+        <span>🔍</span>
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search notes, subjects, topics..."
+            onkeyup="searchNotes()"
+        >
+
+    </div>
+
+
+    <!-- FILTERS -->
+
+    <div class="filters">
+
+        <select id="departmentFilter"
+                onchange="filterNotes()">
+
+            <option value="all">
+                All Departments
+            </option>
+
+            <option value="Information Technology">
+                Information Technology
+            </option>
+
+            <option value="Computer Science">
+                Computer Science
+            </option>
+
+            <option value="AI & Data Science">
+                AI & Data Science
+            </option>
+
+            <option value="Electronics">
+                Electronics
+            </option>
+
+        </select>
+
+
+        <select id="semesterFilter"
+                onchange="filterNotes()">
+
+            <option value="all">
+                All Semesters
+            </option>
+
+            <option value="1">Semester 1</option>
+            <option value="2">Semester 2</option>
+            <option value="3">Semester 3</option>
+            <option value="4">Semester 4</option>
+            <option value="5">Semester 5</option>
+            <option value="6">Semester 6</option>
+            <option value="7">Semester 7</option>
+            <option value="8">Semester 8</option>
+
+        </select>
+
+    </div>
+
+
+    <!-- RESOURCE HEADER -->
+
+    <div class="resource-heading">
+
+        <div>
+
+            <h2>
+                Verified Resources
+            </h2>
+
+            <p>
+                Faculty-approved academic materials
+            </p>
+
+        </div>
+
+        <div class="resource-count">
+            {{ notes|length }} Resources
+        </div>
+
+    </div>
+
+
+    <!-- NOTES -->
+
+    <div class="resource-grid"
+         id="resourceGrid">
+
+
+        {% for note in notes %}
+
+        <div class="resource-card"
+             data-department="{{ note.department }}"
+             data-semester="{{ note.semester }}"
+             data-search="{{ note.title }} {{ note.subject }} {{ note.description }} {{ note.unit }}">
+
+            <div class="resource-top">
+
+                <div class="pdf-icon">
+                    PDF
+                </div>
+
+                <span class="verified-badge">
+                    ✓ VERIFIED
+                </span>
+
+            </div>
+
+
+            <h3>
+                {{ note.title }}
+            </h3>
+
+
+            <p class="resource-description">
+                {{ note.description or
+                "Academic resource shared by a senior student." }}
+            </p>
+
+
+            <div class="resource-tags">
+
+                <span>
+                    {{ note.subject }}
+                </span>
+
+                <span>
+                    Sem {{ note.semester }}
+                </span>
+
+                {% if note.unit %}
+                <span>
+                    {{ note.unit }}
+                </span>
+                {% endif %}
+
+            </div>
+
+
+            <div class="resource-info">
+
+                <span>
+                    👨‍🎓 {{ note.uploader_name }}
+                </span>
+
+                <span>
+                    ↓ {{ note.download_count }}
+                </span>
+
+            </div>
+            <a
+    href="/note/{{ note.id }}"
+    class="details-btn"
+>
+    ⭐ View Details
+</a>
+
+            <a
+                href="/download/{{ note.id }}"
+                class="download-btn"
+            >
+                Download PDF ↓
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+
+        {% if not notes %}
+
+        <div class="empty-state">
+
+            <div>📚</div>
+
+            <h2>
+                No resources yet
+            </h2>
+
+            <p>
+                Approved notes will appear here.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</main>
+
+
+<script>
+
+function searchNotes() {
+
+    const search =
+        document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase();
+
+    const cards =
+        document.querySelectorAll(".resource-card");
+
+    cards.forEach(card => {
+
+        const text =
+            card.dataset.search.toLowerCase();
+
+        if (text.includes(search)) {
+
+            card.style.display = "block";
+
+        } else {
+
+            card.style.display = "none";
+
+        }
+
+    });
+
+}
+
+
+function filterNotes() {
+
+    const department =
+        document
+        .getElementById("departmentFilter")
+        .value;
+
+    const semester =
+        document
+        .getElementById("semesterFilter")
+        .value;
+
+    const cards =
+        document.querySelectorAll(".resource-card");
+
+    cards.forEach(card => {
+
+        const cardDepartment =
+            card.dataset.department;
+
+        const cardSemester =
+            card.dataset.semester;
+
+        const departmentMatch =
+            department === "all" ||
+            cardDepartment === department;
+
+        const semesterMatch =
+            semester === "all" ||
+            cardSemester === semester;
+
+        if (departmentMatch && semesterMatch) {
+
+            card.style.display = "block";
+
+        } else {
+
+            card.style.display = "none";
+
+        }
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>

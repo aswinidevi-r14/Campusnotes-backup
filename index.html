@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CampusNotes | Learn • Share • Grow</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+
+        <div class="logo">
+            <span class="logo-icon">📚</span>
+            Campus<span>Notes</span>
+        </div>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#features">Features</a>
+            <a href="#how">How It Works</a>
+        </nav>
+
+        <a href="/login" class="login-btn">Login</a>
+
+    </header>
+
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="home">
+
+        <div class="hero-content">
+
+            <div class="badge">
+                🎓 Built for Students, By Students
+            </div>
+
+            <h1>
+                Learn from those<br>
+                <span>who came before.</span>
+            </h1>
+
+            <p>
+                Discover verified notes, previous-year papers,
+                study resources and guidance shared by your
+                senior students.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="/login" class="primary-btn">
+                    Explore Notes →
+                </a>
+
+                <a href="#how" class="secondary-btn">
+                    How it works
+                </a>
+            </div>
+
+        </div>
+
+
+        <!-- HERO CARD -->
+
+        <div class="hero-card">
+
+            <div class="card-top">
+                <span>📖</span>
+                <span class="verified">✓ Verified</span>
+            </div>
+
+            <h3>Data Structures</h3>
+
+            <p>Unit 03 • Linked Lists</p>
+
+            <div class="progress">
+                <div></div>
+            </div>
+
+            <div class="card-bottom">
+                <span>⭐ 4.9</span>
+                <span>↓ 248 downloads</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- STATS -->
+
+    <section class="stats">
+
+        <div>
+            <h2>1,200+</h2>
+            <p>Academic Resources</p>
+        </div>
+
+        <div>
+            <h2>350+</h2>
+            <p>Student Contributors</p>
+        </div>
+
+        <div>
+            <h2>45+</h2>
+            <p>Subjects Covered</p>
+        </div>
+
+        <div>
+            <h2>100%</h2>
+            <p>Faculty Verified</p>
+        </div>
+
+    </section>
+
+
+    <!-- FEATURES -->
+
+    <section class="features" id="features">
+
+        <div class="section-heading">
+
+            <span>WHY CAMPUSNOTES?</span>
+
+            <h2>
+                Everything you need to
+                <span>study smarter.</span>
+            </h2>
+
+            <p>
+                A single trusted platform for your academic resources.
+            </p>
+
+        </div>
+
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+
+                <div class="feature-icon">👨‍🎓</div>
+
+                <h3>Senior Contributions</h3>
+
+                <p>
+                    Learn from notes and resources
+                    shared by experienced seniors.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">👨‍🏫</div>
+
+                <h3>Faculty Verified</h3>
+
+                <p>
+                    Every resource is reviewed and
+                    approved by faculty before publishing.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">🔍</div>
+
+                <h3>Smart Search</h3>
+
+                <p>
+                    Quickly find notes by department,
+                    semester, subject or unit.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">📥</div>
+
+                <h3>Easy Downloads</h3>
+
+                <p>
+                    Access and download verified
+                    resources whenever you need them.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- HOW IT WORKS -->
+
+    <section class="how" id="how">
+
+        <div class="section-heading">
+
+            <span>SIMPLE & TRUSTED</span>
+
+            <h2>
+                From upload to
+                <span>learning.</span>
+            </h2>
+
+        </div>
+
+
+        <div class="steps">
+
+            <div class="step">
+
+                <div class="step-number">01</div>
+
+                <h3>Senior Uploads</h3>
+
+                <p>
+                    Seniors upload useful academic
+                    resources to the platform.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">02</div>
+
+                <h3>Staff Reviews</h3>
+
+                <p>
+                    Faculty members verify the resource
+                    before making it available.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">03</div>
+
+                <h3>Junior Learns</h3>
+
+                <p>
+                    Juniors discover and download
+                    trusted study material.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CTA -->
+
+    <section class="cta">
+
+        <h2>
+            Your seniors have already
+            <span>learned it.</span>
+        </h2>
+
+        <p>
+            Now make their knowledge your advantage.
+        </p>
+
+        <a href="/login" class="primary-btn">
+            Start Learning →
+        </a>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <div class="logo">
+            📚 Campus<span>Notes</span>
+        </div>
+
+        <p>
+            Learn • Share • Grow Together
+        </p>
+
+        <p class="copyright">
+            © 2026 CampusNotes
+        </p>
+
+    </footer>
+
+
+</body>
+</html>
